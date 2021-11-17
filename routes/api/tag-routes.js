@@ -38,6 +38,12 @@ router.get("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
   // create a new tag
   try {
+    if (!req.body.tag_name) {
+      res
+        .status(400)
+        .json({ message: "You need to input a value for the key tag_name" });
+      return;
+    }
     const tagData = await Tag.create(req.body);
     res.status(200).json(tagData);
   } catch (err) {
@@ -47,12 +53,20 @@ router.post("/", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   // update a tag's name by its `id` value
+
   try {
+    if (!req.body.tag_name) {
+      res
+        .status(400)
+        .json({ message: "You need to input a value for the key tag_name" });
+      return;
+    }
     const tagData = Tag.update(req.body, {
       where: {
         id: req.params.id,
       },
     });
+
     res.status(200).json(tagData);
   } catch (err) {
     res.status(500).json(err);
